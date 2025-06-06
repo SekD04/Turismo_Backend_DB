@@ -10,22 +10,22 @@ dotenv.config();
 import db from './models/index.js';
 
 // Importar rutas existentes
-import authRoutes            from './routes/auth.routes.js';
-import paisesRoutes          from './routes/paises.routes.js';
-import ciudadesRoutes        from './routes/ciudades.routes.js';
-import usuariosRoutes        from './routes/usuarios.routes.js';
-import personajesRoutes      from './routes/personajes.routes.js';
-import famososRoutes         from './routes/famosos.routes.js';
-import sitiosRoutes          from './routes/sitios.routes.js';
-import platosRoutes          from './routes/platos.routes.js';
-import menuSitioRoutes       from './routes/menuSitio.routes.js';
-import tagsRoutes            from './routes/tags.routes.js';
-import sitioTagsRoutes       from './routes/sitioTags.routes.js';
-import visitasRoutes         from './routes/visitas.routes.js';
+import authRoutes from './routes/auth.routes.js';
+import paisesRoutes from './routes/paises.routes.js';
+import ciudadesRoutes from './routes/ciudades.routes.js';
+import usuariosRoutes from './routes/usuarios.routes.js';
+import personajesRoutes from './routes/personajes.routes.js';
+import famososRoutes from './routes/famosos.routes.js';
+import sitiosRoutes from './routes/sitios.routes.js';
+import platosRoutes from './routes/platos.routes.js';
+import menuSitioRoutes from './routes/menuSitio.routes.js';
+import tagsRoutes from './routes/tags.routes.js';
+import sitioTagsRoutes from './routes/sitioTags.routes.js';
+import visitasRoutes from './routes/visitas.routes.js';
 import relacionSitioPlatoRoutes from './routes/relacionSitioPlato.routes.js';
 
 // IMPORTANTE: importar las rutas de “etiquetas a personajes”
-import personajeTagRoutes    from './routes/personajeTag.routes.js';
+import personajeTagRoutes from './routes/personajeTag.routes.js';
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -33,21 +33,31 @@ const PORT = process.env.PORT || 4000;
 // Middlewares
 app.use(cors());
 app.use(express.json());            // Para parsear JSON en body
+app.use(cors({
+  origin: [
+    'http://localhost:8100',     // Ionic en desarrollo
+    'capacitor://localhost',     // para app en dispositivos con Capacitor
+    'ionic://localhost'          // para Ionic DevApp
+    // puedes agregar otros orígenes si quieres permitir producción
+  ],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 app.use(express.urlencoded({ extended: true }));
 
 // Rutas base (v1)
-app.use('/api/v1/auth',           authRoutes);
-app.use('/api/v1/paises',         paisesRoutes);
-app.use('/api/v1/ciudades',       ciudadesRoutes);
-app.use('/api/v1/usuarios',       usuariosRoutes);
-app.use('/api/v1/personajes',     personajesRoutes);
-app.use('/api/v1/famosos',        famososRoutes);
-app.use('/api/v1/sitios',         sitiosRoutes);
-app.use('/api/v1/platos',         platosRoutes);
-app.use('/api/v1/menuSitio',      menuSitioRoutes);
-app.use('/api/v1/tags',           tagsRoutes);
-app.use('/api/v1/sitioTags',      sitioTagsRoutes);
-app.use('/api/v1/visitas',        visitasRoutes);
+app.use('/api/v1/auth', authRoutes);
+app.use('/api/v1/paises', paisesRoutes);
+app.use('/api/v1/ciudades', ciudadesRoutes);
+app.use('/api/v1/usuarios', usuariosRoutes);
+app.use('/api/v1/personajes', personajesRoutes);
+app.use('/api/v1/famosos', famososRoutes);
+app.use('/api/v1/sitios', sitiosRoutes);
+app.use('/api/v1/platos', platosRoutes);
+app.use('/api/v1/menuSitio', menuSitioRoutes);
+app.use('/api/v1/tags', tagsRoutes);
+app.use('/api/v1/sitioTags', sitioTagsRoutes);
+app.use('/api/v1/visitas', visitasRoutes);
 app.use('/api/v1/relacionSitioPlato', relacionSitioPlatoRoutes);
 
 // --- AQUÍ montamos las rutas de “etiquetas a personajes” ---
